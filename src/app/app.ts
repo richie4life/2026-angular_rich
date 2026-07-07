@@ -11,3 +11,5 @@ import { ChickenDetails } from "./chicken-details/chicken-details";
 export class App {
   protected readonly title = signal('ArCA Chickens!');
 }
+
+

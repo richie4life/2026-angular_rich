@@ -1,0 +1,13 @@
+.chicken-details {
+    width: 80%;
+    padding: 1.5em;
+    background-color: #b6b6d6;
+    text-align: center;
+
+}
+
+.chicken-picture {
+    height: 60%;
+    width: 60%;
+    display: inline-block;
+}
