@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Chicken } from '../types/chicken.js';
 import { CHICKENS } from '../mock-data/mock-chickens.js';
 import { ChickenOverview } from '../chicken-overview/chicken-overview.js';
+import { ChickenService } from '../chickens.services.js';
 
 @Component({
   selector: 'app-chicken-listing',
@@ -10,5 +11,10 @@ import { ChickenOverview } from '../chicken-overview/chicken-overview.js';
   styleUrl: './chicken-listing.css',
 })
 export class ChickenListing {
-  chickens: Chicken[] = CHICKENS;
+  chickenservice: ChickenService = inject(ChickenService);
+  chickens: Chicken[];
+
+  constructor() {
+    this.chickens = this.chickenservice.getChickens();
+  }
 }

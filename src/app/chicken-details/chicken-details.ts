@@ -1,9 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { CHICKEN } from '../mock-data/mock-chicken.js';
+import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Chicken } from '../types/chicken.js';
+import { ChickenService } from '../chickens.services.js';
 
 @Component({
   selector: 'app-chicken-details', //<app-chicken-details>
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './chicken-details.html',
   styleUrl: './chicken-details.css',
 })
@@ -17,8 +19,16 @@ export class ChickenDetails {
   //     console.log(`Set tempVar ${this.tempVar}`);
   //   }, 5000)
   // }
-  protected readonly welcomeMessage = signal('Welcome to chicken-details component');
+  route: ActivatedRoute= inject(ActivatedRoute);
+  chickenService: ChickenService= inject(ChickenService);
+  chickenId: string;
+  protected currentChicken: Chicken;
 
-  protected readonly currentChicken = CHICKEN
+  constructor() {
+    this.chickenId = this.route.snapshot.params['id'];
+    this.currentChicken = this.chickenService.getChickenById(this.chickenId);
+  }
+
+  
 
 };
