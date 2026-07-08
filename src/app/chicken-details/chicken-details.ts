@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Chicken } from '../types/chicken.js';
 import { ChickenService } from '../chickens.services.js';
 
@@ -19,6 +19,7 @@ export class ChickenDetails {
   //     console.log(`Set tempVar ${this.tempVar}`);
   //   }, 5000)
   // }
+  router: Router= inject(Router);
   route: ActivatedRoute= inject(ActivatedRoute);
   chickenService: ChickenService= inject(ChickenService);
   chickenId: string;
@@ -29,6 +30,9 @@ export class ChickenDetails {
     this.currentChicken = this.chickenService.getChickenById(this.chickenId);
   }
 
-  
+  deleteChicken() {
+    this.chickenService.deleteChicken(this.chickenId);
+    this,this.router.navigate([''])
+  }
 
 };

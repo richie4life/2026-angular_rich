@@ -4,6 +4,7 @@ import { Chicken } from './types/chicken.js';
 
 @Service()
 export class ChickenService {
+    chickens: Chicken[] = CHICKENS;
     emptyChicken: Chicken = {
         id: '',
         name: '',
@@ -13,10 +14,20 @@ export class ChickenService {
         imageUrl: ''
     };
     getChickenById(id: string): Chicken {
-        return CHICKENS.find(chicken => chicken.id === id) || this.emptyChicken;
+        return this.chickens.find(chicken => chicken.id === id) || this.emptyChicken;
     }
 
     getChickens(): Chicken[] {
-        return CHICKENS;
+        return this.chickens;
+    }
+
+    deleteChicken(id: string): void {
+        const previousLength = this.chickens.length;
+        this.chickens = this.chickens.filter(chicken => chicken.id !== id);
+        if (this.chickens.length === previousLength) {
+            console.log('Failed to delete chicken with id:', id);
+        } else {
+            console.log('Deleted chicken with id:', id);
+        }
     }
 }
