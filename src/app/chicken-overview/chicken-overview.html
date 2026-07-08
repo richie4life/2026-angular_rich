@@ -1,0 +1,10 @@
+<div class="chicken-overview">
+    <img class="chicken-picture" src="{{currentChicken().imageUrl || './ui/images/unknown.jpg'}}">
+    <br>
+    <!-- routerLink to details -->
+     <a [routerLink]="['/chickens', currentChicken().id]">Details...</a>
+     <div><span>Name : </span>{{currentChicken().name}}</div>
+     <div><span>Breed : </span>{{currentChicken().breed}}</div>
+     <div><span>Color : </span>{{currentChicken().color}}</div>
+</div>
+ 

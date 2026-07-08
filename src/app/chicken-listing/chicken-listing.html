@@ -1,7 +1,5 @@
-Total of {{ chickens.length }} chickens:
+Total of {{ chickens.length }} chickens: <br>
 
-<ol>
-  @for (chicken of chickens; track $index) {
-    <li>{{ chicken.name }} ({{chicken.breed }})</li>
-  }
-</ol>
+@for (chicken of chickens; track $index) {
+    <app-chicken-overview [currentChicken]="chicken"></app-chicken-overview>
+}
