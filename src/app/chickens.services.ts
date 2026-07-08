@@ -30,4 +30,6 @@ export class ChickenService {
             console.log('Deleted chicken with id:', id);
         }
     }
+
+    
 }
