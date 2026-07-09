@@ -31,5 +31,11 @@ export class ChickenService {
         }
     }
 
-    
+    updateChicken(id: string, updatedChicken: Chicken) {
+        const idx = this.chickens.findIndex(c => c.id === id);
+
+        if (idx >= 0) {
+            this.chickens[idx] = updatedChicken;
+        }
+    }
 }

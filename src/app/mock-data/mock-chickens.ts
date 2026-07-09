@@ -42,7 +42,7 @@ export const CHICKENS: Chicken[] = [
   {
     id: 'e9aabb6d-3514-43b4-ab75-a2d0f91c7679',
     name: 'EV00',
-    breed: 'RHode Island Red',
+    breed: 'Rhode Island Red',
     weight: 3.5,
     color: 'red',
     imageUrl: "./chickens/red-chicken.jpg"
