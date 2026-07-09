@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Chicken } from '../types/chicken.js';
 import { CHICKENS } from '../mock-data/mock-chickens.js';
 import { ChickenOverview } from '../chicken-overview/chicken-overview.js';
@@ -14,12 +14,13 @@ import { RouterModule } from '@angular/router';
 })
 export class ChickenListing {
   chickenservice: ChickenService = inject(ChickenService);
-  chickens: Chicken[] = [];
+  // chickens: Chicken[] = [];
+  chickens = signal<Chicken[]>([])
 
   constructor() {
     this.chickenservice.getChickens()
     .then((chickensData) => {
-      this.chickens = chickensData
+      this.chickens.set(chickensData);
     });
   }
 
