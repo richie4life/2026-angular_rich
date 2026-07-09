@@ -38,4 +38,8 @@ export class ChickenService {
             this.chickens[idx] = updatedChicken;
         }
     }
+
+    createChicken(newChicken: Chicken): void {
+        this.chickens.push(newChicken);
+    }
 }
