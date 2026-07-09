@@ -4,6 +4,7 @@ import { Chicken } from './types/chicken.js';
 
 @Service()
 export class ChickenService {
+    baseurl = '/api/v1/chickens';
     chickens: Chicken[] = CHICKENS;
     emptyChicken: Chicken = {
         id: '',
@@ -13,12 +14,14 @@ export class ChickenService {
         color: '',
         imageUrl: ''
     };
-    getChickenById(id: string): Chicken {
-        return this.chickens.find(chicken => chicken.id === id) || this.emptyChicken;
+
+    async getChickens(): Promise<Chicken[]> {
+        const data = await fetch(`${this.baseurl}`)
+        return await data.json()
     }
 
-    getChickens(): Chicken[] {
-        return this.chickens;
+    getChickenById(id: string): Chicken {
+        return this.chickens.find(chicken => chicken.id === id) || this.emptyChicken;
     }
 
     deleteChicken(id: string): void {

@@ -14,9 +14,16 @@ import { RouterModule } from '@angular/router';
 })
 export class ChickenListing {
   chickenservice: ChickenService = inject(ChickenService);
-  chickens: Chicken[];
+  chickens: Chicken[] = [];
 
   constructor() {
-    this.chickens = this.chickenservice.getChickens();
+    this.chickenservice.getChickens()
+    .then((chickensData) => {
+      this.chickens = chickensData
+    });
+  }
+
+  async ngOnInit() {
+    console.log('ngOnInit')
   }
 }
