@@ -3,10 +3,12 @@ import { Chicken } from '../types/chicken.js';
 import { CHICKENS } from '../mock-data/mock-chickens.js';
 import { ChickenOverview } from '../chicken-overview/chicken-overview.js';
 import { ChickenService } from '../chickens.services.js';
+import { RouterModule } from '@angular/router';
+// import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-chicken-listing',
-  imports: [ChickenOverview],
+  imports: [ChickenOverview, RouterModule],
   templateUrl: './chicken-listing.html',
   styleUrl: './chicken-listing.css',
 })
