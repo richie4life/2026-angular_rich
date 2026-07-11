@@ -23,8 +23,4 @@ export class ChickenListing {
       this.chickens.set(chickensData);
     });
   }
-
-  async ngOnInit() {
-    console.log('ngOnInit')
-  }
 }

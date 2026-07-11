@@ -23,21 +23,22 @@ export class ChickenService {
         return await data.json()
     }
 
-    getChickenById(id: string): Chicken {
-        return this.chickens.find(chicken => chicken.id === id) || this.emptyChicken;
+    async getChickenById(id: string): Promise<Chicken>  {
+        const data = await fetch(`${this.baseurl}/${id}`)
+        return await data.json();
     }
 
-    deleteChicken(id: string): void {
-        const previousLength = this.chickens.length;
-        this.chickens = this.chickens.filter(chicken => chicken.id !== id);
-        if (this.chickens.length === previousLength) {
-            console.log('Failed to delete chicken with id:', id);
-        } else {
-            console.log('Deleted chicken with id:', id);
-        }
+    async deleteChicken(id: string): Promise<void> {
+        // New Promise to prevent race condition
+        return new Promise((resolve) => {
+            this.http.delete(`${this.baseurl}/${id}`)
+                .subscribe(() => {
+                    resolve()
+                });
+        });
     }
 
-    updateChicken(id: string, updatedChicken: Chicken) {
+    updateChicken(id: string, updatedChicken: Chicken): void {
         const idx = this.chickens.findIndex(c => c.id === id);
 
         if (idx >= 0) {
@@ -47,12 +48,11 @@ export class ChickenService {
 
     async createChicken(newChicken: Chicken): Promise<void> {
         // New Promise to prevent race condition
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.http.post(this.baseurl, newChicken, {
                 keepalive: true,
             })
-                .subscribe((data) => {
-                    console.log(data);
+                .subscribe(() => {
                     resolve()
                 });
         });

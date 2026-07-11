@@ -19,20 +19,29 @@ export class ChickenDetails {
   //     console.log(`Set tempVar ${this.tempVar}`);
   //   }, 5000)
   // }
-  router: Router= inject(Router);
-  route: ActivatedRoute= inject(ActivatedRoute);
-  chickenService: ChickenService= inject(ChickenService);
+  router: Router = inject(Router);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  chickenService: ChickenService = inject(ChickenService);
   chickenId: string;
-  protected currentChicken: Chicken;
+  currentChicken = signal<Chicken>({
+    id: '',
+    name: '',
+    breed: '',
+    weight: 0,
+    color: '',
+  })
 
   constructor() {
     this.chickenId = this.route.snapshot.params['id'];
-    this.currentChicken = this.chickenService.getChickenById(this.chickenId);
+    this.chickenService.getChickenById(this.chickenId)
+      .then((chickensData) => {
+        this.currentChicken.set(chickensData);
+      });
   }
 
-  deleteChicken() {
-    this.chickenService.deleteChicken(this.chickenId);
-    this,this.router.navigate([''])
+  async deleteChicken() {
+    await this.chickenService.deleteChicken(this.chickenId);
+    this, this.router.navigate([''])
   }
 
 };
