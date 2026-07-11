@@ -3,6 +3,7 @@ import { Chicken } from '../types/chicken';
 import { ChickenService } from '../chickens.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CONSTANTS } from '../constants';
 
 @Component({
   selector: 'app-chicken-edit',
@@ -11,22 +12,15 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './chicken-edit.css',
 })
 export class ChickenEdit {
-chickenService: ChickenService = inject(ChickenService);
-router: Router = inject(Router);
-route: ActivatedRoute = inject(ActivatedRoute);
-// TODO: Replace with emptyChicken constant
-  currentChicken = signal<Chicken>({
-    id: '',
-    name: '',
-    breed: '',
-    weight: 0,
-    color: '',
-  });
-chickenId: string;
-//
-// Marked as optional/nullable to make typescript happy
-// ... acceptable in certain situations but generally bad practice
-chickenForm!: FormGroup
+  chickenService: ChickenService = inject(ChickenService);
+  router: Router = inject(Router);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  currentChicken = signal<Chicken>(CONSTANTS.EMPTY_CHICKEN);
+  chickenId: string;
+  //
+  // Marked as optional/nullable to make typescript happy
+  // ... acceptable in certain situations but generally bad practice
+  chickenForm!: FormGroup
 
   constructor() {
     this.chickenId = this.route.snapshot.params['id'];
@@ -34,13 +28,13 @@ chickenForm!: FormGroup
     this.chickenService.getChickenById(this.chickenId)
       .then((chickensData) => {
         this.currentChicken.set(chickensData);
-          this.chickenForm = new FormGroup({
-      name: new FormControl(this.currentChicken.name),
-      breed: new FormControl(this.currentChicken().breed),
-      color: new FormControl(this.currentChicken().color),
-      weight: new FormControl(this.currentChicken().weight),
-      });
-    })
+        this.chickenForm = new FormGroup({
+          name: new FormControl(this.currentChicken.name),
+          breed: new FormControl(this.currentChicken().breed),
+          color: new FormControl(this.currentChicken().color),
+          weight: new FormControl(this.currentChicken().weight),
+        });
+      })
   }
 
   saveChicken(): void {
@@ -50,7 +44,7 @@ chickenForm!: FormGroup
       ...this.chickenForm?.value
     };
     this.chickenService.updateChicken(this.chickenId, updateChicken);
-    
+
     //Redirect to main page / chicken listing
     this.router.navigate([''])
   }

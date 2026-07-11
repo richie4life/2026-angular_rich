@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Chicken } from '../types/chicken.js';
 import { ChickenService } from '../chickens.services.js';
+import { CONSTANTS } from '../constants.js';
 
 @Component({
   selector: 'app-chicken-details', //<app-chicken-details>
@@ -23,14 +24,7 @@ export class ChickenDetails {
   route: ActivatedRoute = inject(ActivatedRoute);
   chickenService: ChickenService = inject(ChickenService);
   chickenId: string;
-  // TODO: Replace with emptyChicken constant
-  currentChicken = signal<Chicken>({
-    id: '',
-    name: '',
-    breed: '',
-    weight: 0,
-    color: '',
-  })
+  currentChicken = signal<Chicken>(CONSTANTS.EMPTY_CHICKEN)
 
   constructor() {
     this.chickenId = this.route.snapshot.params['id'];
