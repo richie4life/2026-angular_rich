@@ -24,12 +24,11 @@ export class ChickenEdit {
 
   constructor() {
     this.chickenId = this.route.snapshot.params['id'];
-    // TODO: FIX THIS!! Use signal
     this.chickenService.getChickenById(this.chickenId)
       .then((chickensData) => {
         this.currentChicken.set(chickensData);
         this.chickenForm = new FormGroup({
-          name: new FormControl(this.currentChicken.name),
+          name: new FormControl(this.currentChicken().name),
           breed: new FormControl(this.currentChicken().breed),
           color: new FormControl(this.currentChicken().color),
           weight: new FormControl(this.currentChicken().weight),
@@ -37,13 +36,13 @@ export class ChickenEdit {
       })
   }
 
-  saveChicken(): void {
+  async saveChicken(): Promise<void> {
     const updateChicken: Chicken = {
       id: this.currentChicken().id,
       imageUrl: this.currentChicken().imageUrl,
       ...this.chickenForm?.value
     };
-    this.chickenService.updateChicken(this.chickenId, updateChicken);
+    await this.chickenService.updateChicken(this.chickenId, updateChicken);
 
     //Redirect to main page / chicken listing
     this.router.navigate([''])

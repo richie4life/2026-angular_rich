@@ -9,26 +9,18 @@ export class ChickenService {
     private http = inject(HttpClient)
     baseurl = '/api/v1/chickens';
     chickens: Chicken[] = CHICKENS;
-    emptyChicken: Chicken = {
-        id: '',
-        name: '',
-        breed: '',
-        weight: 0,
-        color: '',
-        imageUrl: ''
-    };
 
     async getChickens(): Promise<Chicken[]> {
         const data = await fetch(`${this.baseurl}`)
         return await data.json()
     }
 
-    async getChickenById(id: string): Promise<Chicken>  {
+    async getChickenById(id: string): Promise<Chicken> {
         const data = await fetch(`${this.baseurl}/${id}`)
         return await data.json();
     }
 
-    async deleteChicken(id: string): Promise<void> {
+    deleteChicken(id: string): Promise<void> {
         // New Promise to prevent race condition
         return new Promise((resolve) => {
             this.http.delete(`${this.baseurl}/${id}`)
@@ -38,15 +30,19 @@ export class ChickenService {
         });
     }
 
-    updateChicken(id: string, updatedChicken: Chicken): void {
-        const idx = this.chickens.findIndex(c => c.id === id);
-
-        if (idx >= 0) {
-            this.chickens[idx] = updatedChicken;
-        }
+    updateChicken(id: string, updatedChicken: Chicken): Promise<void> {
+        // New Promise to prevent race condition
+        return new Promise((resolve) => {
+            this.http.patch(`${this.baseurl}/${id}`, updatedChicken, {
+                keepalive: true,
+            })
+                .subscribe(() => {
+                    resolve()
+                });
+        });
     }
 
-    async createChicken(newChicken: Chicken): Promise<void> {
+    createChicken(newChicken: Chicken): Promise<void> {
         // New Promise to prevent race condition
         return new Promise((resolve) => {
             this.http.post(this.baseurl, newChicken, {
