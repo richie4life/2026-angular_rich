@@ -1,9 +1,12 @@
-import { Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { CHICKENS } from './mock-data/mock-chickens.js';
 import { Chicken } from './types/chicken.js';
+import { HttpClient } from '@angular/common/http';
+
 
 @Service()
 export class ChickenService {
+    private http = inject(HttpClient)
     baseurl = '/api/v1/chickens';
     chickens: Chicken[] = CHICKENS;
     emptyChicken: Chicken = {
@@ -42,7 +45,16 @@ export class ChickenService {
         }
     }
 
-    createChicken(newChicken: Chicken): void {
-        this.chickens.push(newChicken);
+    async createChicken(newChicken: Chicken): Promise<void> {
+        // New Promise to prevent race condition
+        return new Promise((resolve, reject) => {
+            this.http.post(this.baseurl, newChicken, {
+                keepalive: true,
+            })
+                .subscribe((data) => {
+                    console.log(data);
+                    resolve()
+                });
+        });
     }
 }
