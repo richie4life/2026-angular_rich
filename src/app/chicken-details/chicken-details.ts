@@ -23,6 +23,7 @@ export class ChickenDetails {
   route: ActivatedRoute = inject(ActivatedRoute);
   chickenService: ChickenService = inject(ChickenService);
   chickenId: string;
+  // TODO: Replace with emptyChicken constant
   currentChicken = signal<Chicken>({
     id: '',
     name: '',
